@@ -1,0 +1,1 @@
+let PF = require('pathfinding');
