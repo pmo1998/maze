@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import Node from './node';
 import UniqueId from 'react-html-id'
+import PropTypes from 'prop-types';
 
 class Maze extends Component {
       constructor(props) {
         super();
         let PF = require('pathfinding');
-        let grid = new PF.Grid(props.width-4,props.height-4);
-        this.nodes=grid.nodes;
+        this.grid = new PF.Grid(props.width-4,props.height-4);
+        this.nodes=this.grid.nodes;
         this.start={x:this.getRandomX(),y:this.getRandomY()};
         this.finish={x:this.getRandomX(),y:this.getRandomY()};
         UniqueId.enableUniqueIds(this);
@@ -17,6 +18,13 @@ class Maze extends Component {
       this.nodes[y][x].walkable=false;
 
     }
+
+    /*findPath=()=> {
+      let PF = require('pathfinding');
+      let finder = new PF.AStarFinder();
+      let path = finder.findPath(this.start.x, this.start.y, this.finish.x, this.finish.y, this.grid);
+      console.log(path);
+    }*/
 
     updateNode=(type,y,x)=>{
       if(type==='start'){
@@ -73,5 +81,9 @@ class Maze extends Component {
     }
 }
 
-//getNextId={this.getNextId.bind(this)}
+Maze.propTypes={
+  width:PropTypes.number,
+  height:PropTypes.number
+}
+
 export default Maze;

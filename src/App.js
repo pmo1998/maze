@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import './styles/style.css';
-import GenerateMazeButton from './components/greetingButton';
 import Maze from './components/maze'
 
 
