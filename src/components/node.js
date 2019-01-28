@@ -4,40 +4,44 @@ var isStartSelected=false,isFinishSelected=false, isFreeSelected=false;
 class Node extends Component {
         constructor(props) {
         super();
-        let color=props.isStart?this.getColor('red'):props.isFinish?this.getColor('green'):this.getColor('black');
-        this.state={
-          node:props.node,
-          color:color,
-          isStart:props.isStart,
-          isFinish:props.isFinish
-        }
+        this.node=props.node;
+        this.isStart=props.isStart;
+        this.isFinish=props.isFinish;
         this.setWalkable=props.setWalkable;
         this.updateNode=props.updateNode;
+        let color=props.isStart?this.getColor('red'):props.isFinish?this.getColor('green'):this.getColor('black');
+        this.state={
+          color:color
+        }
       }
+      componentWillReceiveProps(nextProps) {
+        if(nextProps.isInPath&&!this.isStart&&!this.isFinish){
+          this.setState({color:this.getColor('yellow')});
+        }
+       }
 
       getColor=(color)=> {
         return {backgroundColor:color};
       }
 
       changeWalkable=()=>{
-        const node=Object.assign({}, this.state.node);
-        node.walkable=false;
-        this.setState({color:this.getColor('grey'), node:node});
-        this.setWalkable(node.y,node.x);
+        this.node.walkable=false;
+        this.setState({color:this.getColor('grey')});
+        this.setWalkable(this.node.y,this.node.x);
       }
+
 
     onMouseDown=(e)=>{
-      if(this.state.isStart) {
+      if(this.isStart) {
           isStartSelected=true;
-          this.setState({isStart:false});
+          this.isStart=false;
        }
-      else if(this.state.isFinish) {
+      else if(this.isFinish) {
         isFinishSelected=true;
-        this.setState({isFinish:false});
+        this.isFinish=false;
       }
-      else if(!isStartSelected&&!isFinishSelected&&!e.button&&!this.state.isFinish) {
+      else if(!isStartSelected&&!isFinishSelected&&!e.button&&!this.isFinish) {
           this.changeWalkable.call(this);
-
           isFreeSelected=true;
         }
         //e.button===0 if left button pressed
@@ -45,31 +49,32 @@ class Node extends Component {
 
     onMouseUp=(e)=>{
         if(isStartSelected) {
-          this.updateNode('start',this.state.node.y,this.state.x);
-          this.setState({isStart:true,color:this.getColor('red')});
+          this.updateNode('start',this.node.y,this.node.x);
+          this.isStart=true;
+          this.setState({color:this.getColor('red')});
           isStartSelected=false;
         }
         if(isFinishSelected) {
-          this.updateNode('finish',this.state.node.y,this.state.x);
-          this.setState({isFinish:true,color:this.getColor('green')});
+          this.updateNode('finish',this.node.y,this.node.x);
+          this.isFinish=true;
+          this.setState({color:this.getColor('green')});
           isFinishSelected=false;
         }
         if(isFreeSelected){
            this.changeWalkable.call(this);
-
            isFreeSelected=false;
          }
     }
 
     onMouseEnter=(e)=>{
-      if(isStartSelected&&!this.state.isFinish&&this.state.node.walkable) this.setState({color:this.getColor('red')});
-      if(isFinishSelected&&!this.state.isStart&&this.state.node.walkable) this.setState({color:this.getColor('green')});
-      if(isFreeSelected&&!this.state.isFinish&&!this.state.isStart) this.changeWalkable.call(this);
+      if(isStartSelected&&!this.isFinish&&this.node.walkable) this.setState({color:this.getColor('red')});
+      if(isFinishSelected&&!this.isStart&&this.node.walkable) this.setState({color:this.getColor('green')});
+      if(isFreeSelected&&!this.isFinish&&!this.isStart) this.changeWalkable.call(this);
     }
 
     onMouseLeave=(e)=>{
-      if(isStartSelected&&!this.state.isFinish&&this.state.node.walkable) this.setState({color:this.getColor('black')});
-      if(isFinishSelected&&!this.state.isStart&&this.state.node.walkable) this.setState({color:this.getColor('black')});
+      if(isStartSelected&&!this.isFinish&&this.node.walkable) this.setState({color:this.getColor('black')});
+      if(isFinishSelected&&!this.isStart&&this.node.walkable) this.setState({color:this.getColor('black')});
   }
 
       render() {
@@ -91,7 +96,8 @@ class Node extends Component {
     isStart:PropTypes.bool,
     isFinish:PropTypes.bool,
     setWalkable:PropTypes.func,
-    updateNode:PropTypes.func
+    updateNode:PropTypes.func,
+    isInPath:PropTypes.bool
   }
 
 export default Node;
