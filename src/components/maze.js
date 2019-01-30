@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import Node from './node';
 import UniqueId from 'react-html-id'
 import PropTypes from 'prop-types';
+import Panel from './panel'
+
 var renderNodes=[];
 class Maze extends Component {
       constructor(props) {
         super();
         this.PF = require('pathfinding');
-        this.grid = new this.PF.Grid(props.width-4,props.height-4);
+        this.grid = new this.PF.Grid(props.width,props.height);
         this.state={
           nodes:this.grid.nodes,
           path:[]
@@ -15,6 +17,7 @@ class Maze extends Component {
         this.start={x:this.getRandomX(),y:this.getRandomY()};
         this.finish={x:this.getRandomX(),y:this.getRandomY()};
         UniqueId.enableUniqueIds(this);
+
     }
 
     setWalkable=(y,x)=>{
@@ -43,18 +46,18 @@ class Maze extends Component {
     }
 
     getRandomY=()=> {
-      let y=Math.floor(Math.random() * (this.state.nodes.length-1));
+      let y=Math.floor(Math.random() * (this.state.nodes.length-20));
       if(!this.start) return y;
       else if(y!==this.start.y) return y;
       else {
         while(true) {
-            let newy=Math.floor(Math.random() * (this.state.nodes.length-1));
+            let newy=Math.floor(Math.random() * (this.state.nodes.length-20));
             if(newy!==y) return newy;
         }
       }
     }
 
-    getRandomX=()=> Math.floor(Math.random() * (this.state.nodes[0].length-1));
+    getRandomX=()=> Math.floor(Math.random() * (this.state.nodes[0].length-20));
 
     isInPath=(node)=>{
       let isInPath=false;
@@ -69,11 +72,11 @@ class Maze extends Component {
       return isInPath;
     }
 
-    getRenderResult=()=>{
+    getRenderResult=()=>{ //<button onClick={this.findPath.bind(this)}>Find Path</button>
       renderNodes=[];
       return (
         <div>
-        <button onClick={this.findPath.bind(this)}>Find Path</button>
+        <Panel find={this.findPath.bind(this)}/>
         <div className="container"> {
              this.state.nodes.map((value,index1)=>{
                 let nodes = value.map((val,index2)=>{
@@ -111,5 +114,6 @@ Maze.propTypes={
   width:PropTypes.number,
   height:PropTypes.number
 }
+
 
 export default Maze;

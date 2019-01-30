@@ -9,27 +9,65 @@ body {
 }
 
 .row {
-  height: 35px;
+  height: 28px;
   width: 100%;
 }
 
+.container {
+  position: relative;
+}
+
 .wrapper {
-  height: 100vh;
+  position: fixed;
+  /*height: 100vh;
   display: flex;
   justify-content:center;
   align-items:center;
-  flex-direction:column;
+  flex-direction:column;*/
+}
+
+.panel {
+  color:white;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1000;  
+}
+
+.panel-text {
+  padding:0;
+  margin: 5px 0 0 0;
 }
 
 
-.generate-maze-btn {
-  vertical-align:middle;
+.find-btn {
+  background-color: #0C4FB6;
+  color:#000;
+  border:none;
+  padding: 6px;
+  margin-top: 10px;
 }
+
+.green {
+  color:green
+}
+
+.red {
+  color:red;
+}
+
+.panel h2 {
+  margin: 0;
+  padding: 0;
+}
+
 
 .node {
   display: inline-block;
   box-sizing: border-box;
-  width:35px;
+  width:28px;
   height: 100%;
-  border: 2px solid #86C71A;
+  border: 2px solid #6DA215;
 }
