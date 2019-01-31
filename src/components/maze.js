@@ -17,6 +17,7 @@ class Maze extends Component {
         this.start={x:this.getRandomX(),y:this.getRandomY()};
         this.finish={x:this.getRandomX(),y:this.getRandomY()};
         UniqueId.enableUniqueIds(this);
+        console.log(this.grid);
 
     }
 
@@ -28,14 +29,16 @@ class Maze extends Component {
 
     findPath=()=> {
       let finder = new this.PF.AStarFinder();
-      let path = finder.findPath(this.start.x, this.start.y, this.finish.x, this.finish.y, this.grid);
+      let grid= this.grid.clone();
+      let path = finder.findPath(this.start.x, this.start.y, this.finish.x, this.finish.y, grid);
       this.setState({path:path});
     }
 
-    updateNode=(type,y,x)=>{
+    updateNode=(type,x,y)=>{
       if(type==='start'){
         this.start.x=x;
         this.start.y=y;
+        console.log(this.start);
         console.log('Start has changed!');
       }
       if(type==='finish') {
@@ -72,7 +75,7 @@ class Maze extends Component {
       return isInPath;
     }
 
-    getRenderResult=()=>{ //<button onClick={this.findPath.bind(this)}>Find Path</button>
+    getRenderResult=()=>{
       renderNodes=[];
       return (
         <div>

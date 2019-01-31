@@ -15,6 +15,9 @@ class Node extends Component {
         }
       }
       componentWillReceiveProps(nextProps) {
+        if(!nextProps.isInPath&&this.state.color.backgroundColor==='yellow') {
+              this.setState({color:this.getColor('black')});
+        }
         if(nextProps.isInPath&&!this.isStart&&!this.isFinish){
           this.setState({color:this.getColor('yellow')});
         }
@@ -26,7 +29,7 @@ class Node extends Component {
 
       changeWalkable=()=>{
         this.node.walkable=false;
-        this.setState({color:this.getColor('grey')});
+        //this.setState({color:this.getColor('grey')});
         this.setWalkable(this.node.y,this.node.x);
       }
 
@@ -41,6 +44,7 @@ class Node extends Component {
         this.isFinish=false;
       }
       else if(!isStartSelected&&!isFinishSelected&&!e.button&&!this.isFinish) {
+         this.setState({color:this.getColor('grey')});
           this.changeWalkable.call(this);
           isFreeSelected=true;
         }
@@ -49,13 +53,14 @@ class Node extends Component {
 
     onMouseUp=(e)=>{
         if(isStartSelected) {
-          this.updateNode('start',this.node.y,this.node.x);
+
+          this.updateNode('start',this.node.x,this.node.y);
           this.isStart=true;
           this.setState({color:this.getColor('red')});
           isStartSelected=false;
         }
         if(isFinishSelected) {
-          this.updateNode('finish',this.node.y,this.node.x);
+          this.updateNode('finish',this.node.x,this.node.y);
           this.isFinish=true;
           this.setState({color:this.getColor('green')});
           isFinishSelected=false;
@@ -69,7 +74,10 @@ class Node extends Component {
     onMouseEnter=(e)=>{
       if(isStartSelected&&!this.isFinish&&this.node.walkable) this.setState({color:this.getColor('red')});
       if(isFinishSelected&&!this.isStart&&this.node.walkable) this.setState({color:this.getColor('green')});
-      if(isFreeSelected&&!this.isFinish&&!this.isStart) this.changeWalkable.call(this);
+      if(isFreeSelected&&!this.isFinish&&!this.isStart) {
+        this.setState({color:this.getColor('grey')});
+        this.changeWalkable.call(this);
+      }
     }
 
     onMouseLeave=(e)=>{
