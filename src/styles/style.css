@@ -19,21 +19,17 @@ body {
 
 .wrapper {
   position: fixed;
-  /*height: 100vh;
-  display: flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;*/
 }
 
 .panel {
   color:white;
   padding: 20px;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0);
   position: absolute;
   right: 0;
   top: 0;
-  z-index: 1000;  
+  z-index: 1000;
+  font-size: 18px;
 }
 
 .panel-text {
@@ -41,13 +37,23 @@ body {
   margin: 5px 0 0 0;
 }
 
-
-.find-btn {
-  background-color: #0C4FB6;
+.btn {
   color:#000;
   border:none;
   padding: 6px;
-  margin-top: 10px;
+  margin-top: 15px;
+  height: 35px;
+  width: 150px;
+  display: inline-block;
+}
+
+.find-btn {
+  background-color: #0C4FB6;
+}
+
+.clear-btn {
+  margin-left: 10px;
+  background-color: grey;
 }
 
 .green {
@@ -59,7 +65,7 @@ body {
 }
 
 .panel h2 {
-  margin: 0;
+  margin: 0 0 10px 0;
   padding: 0;
 }
 
